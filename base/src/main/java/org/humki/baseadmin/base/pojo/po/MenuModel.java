@@ -24,7 +24,7 @@ import java.util.Set;
 public class MenuModel extends BasePO {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**

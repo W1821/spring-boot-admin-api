@@ -1,6 +1,7 @@
 package org.humki.baseadmin.security.config;
 
 import lombok.Cleanup;
+import lombok.extern.slf4j.Slf4j;
 import org.humki.baseadmin.common.config.AdminConfig;
 import org.humki.baseadmin.common.constant.GlobalConstant;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
@@ -36,6 +37,7 @@ import java.io.PrintWriter;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AdminConfig adminConfig;
@@ -97,6 +99,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+    @Override
+    public void configure(WebSecurity web) {
+        //忽略的路径，不会权限校验
+        web.ignoring()
+                .antMatchers(adminConfig.getIgnoredPath());
+    }
+
     private void logoutSuccess(HttpServletResponse response) {
         response.setStatus(HttpStatus.OK.value());
         response.setCharacterEncoding(GlobalConstant.CHARACTER_ENCODING_UTF8);
@@ -108,12 +117,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         } catch (IOException ignored) {
         }
     }
-
-    @Override
-    public void configure(WebSecurity web) {
-        //忽略的路径，不会权限校验
-        web.ignoring()
-                .antMatchers(adminConfig.getIgnoredPath());
-    }
-
 }

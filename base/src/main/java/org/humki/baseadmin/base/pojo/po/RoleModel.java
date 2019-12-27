@@ -26,7 +26,7 @@ public class RoleModel extends BasePO {
      * id主键
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * 角色名称

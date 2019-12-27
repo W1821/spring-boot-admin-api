@@ -3,10 +3,7 @@ package org.humki.baseadmin.base.pojo.po;
 import lombok.*;
 import org.humki.baseadmin.common.pojo.po.BasePO;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 按钮表表
@@ -23,7 +20,7 @@ import javax.persistence.Table;
 public class ButtonModel extends BasePO {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
