@@ -14,6 +14,7 @@
     <properties>
         <gson.version>2.8.6</gson.version>
         <easypoi-base.version>2.4.0</easypoi-base.version>
+        <!-- 需要等待升级版本，此版本和spring-boot 2.x不兼容 -->
         <swagger2.version>2.9.2</swagger2.version>
         <commons-codec.version>1.13</commons-codec.version>
         <guava.version>28.1-jre</guava.version>
@@ -39,6 +40,13 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
+            </dependency>
+
+            <!-- 二方库 ueditor编辑器 -->
+            <dependency>
+                <groupId>org.humki</groupId>
+                <artifactId>baidu-ueditor-spring-boot-starter</artifactId>
+                <version>${humki-baidu-ueditor.version}</version>
             </dependency>
 
             <!--数据库-->
@@ -108,12 +116,7 @@
                 <version>${okhttp3.version}</version>
             </dependency>
 
-            <!-- 二方库 ueditor编辑器 -->
-            <dependency>
-                <groupId>org.humki</groupId>
-                <artifactId>baidu-ueditor-spring-boot-starter</artifactId>
-                <version>${humki-baidu-ueditor.version}</version>
-            </dependency>
+
 
         </dependencies>
 
