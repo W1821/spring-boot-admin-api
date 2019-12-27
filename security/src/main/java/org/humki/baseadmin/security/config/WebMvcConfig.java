@@ -1,5 +1,6 @@
 package org.humki.baseadmin.security.config;
 
+import org.humki.baiduueditor.config.UeditorUploadConfig;
 import org.humki.baseadmin.common.config.AdminConfig;
 import org.humki.baseadmin.file.config.FileUploadConfig;
 import org.humki.baseadmin.security.interceptor.MenuAuthInterceptor;
@@ -17,7 +18,7 @@ import java.io.File;
  * <b>功能：</b>MVC配置<br>
  * 例如：public/image/** -> 磁盘某个位置<br>
  * 例如：拦截器<br>
- *
+
  * <b>日期：</b>2017/4/11 23:27<br>
  *
  * @author Kael
@@ -31,6 +32,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final AdminConfig adminConfig;
     private final SecurityConfig securityConfig;
     private final FileUploadConfig fileUploadConfig;
+    private final UeditorUploadConfig ueditorUploadConfig;
     private final MenuAuthInterceptor menuAuthInterceptor;
 
     @Autowired
@@ -38,10 +40,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
             AdminConfig adminConfig,
             SecurityConfig securityConfig,
             FileUploadConfig fileUploadConfig,
+            UeditorUploadConfig ueditorUploadConfig,
             MenuAuthInterceptor menuAuthInterceptor) {
         this.adminConfig = adminConfig;
         this.securityConfig = securityConfig;
         this.fileUploadConfig = fileUploadConfig;
+        this.ueditorUploadConfig = ueditorUploadConfig;
         this.menuAuthInterceptor = menuAuthInterceptor;
     }
 
@@ -75,7 +79,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(menuAuthInterceptor).addPathPatterns("/**")
                 .excludePathPatterns(securityConfig.getLoginUrl())
                 .excludePathPatterns(adminConfig.getIgnoredPath())
-                .excludePathPatterns(fileUploadConfig.getResourceHandler());
+                .excludePathPatterns(fileUploadConfig.getResourceHandler())
+                .excludePathPatterns(ueditorUploadConfig.getResourceHandler());
     }
 
 }

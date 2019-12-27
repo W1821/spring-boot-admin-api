@@ -6,7 +6,6 @@ import org.humki.baseadmin.common.constant.GlobalConstant;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.GsonUtil;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
-import org.humki.baseadmin.file.config.FileUploadConfig;
 import org.humki.baseadmin.security.entrypoint.RestAuthenticationEntryPoint;
 import org.humki.baseadmin.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AdminConfig adminConfig;
     private final SecurityConfig securityConfig;
-    private final FileUploadConfig fileUploadConfig;
     private final PasswordEncoder passwordEncoder;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final UserDetailsServiceImpl userDetailsService;
@@ -50,14 +48,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public WebSecurityConfig(
             AdminConfig adminConfig,
             SecurityConfig securityConfig,
-            FileUploadConfig fileUploadConfig,
             PasswordEncoder passwordEncoder,
             RestAuthenticationEntryPoint restAuthenticationEntryPoint,
             UserDetailsServiceImpl userDetailsService) {
 
         this.adminConfig = adminConfig;
         this.securityConfig = securityConfig;
-        this.fileUploadConfig = fileUploadConfig;
         this.passwordEncoder = passwordEncoder;
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
         this.userDetailsService = userDetailsService;
@@ -117,8 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         //忽略的路径，不会权限校验
         web.ignoring()
-                .antMatchers(adminConfig.getIgnoredPath())
-                .antMatchers(fileUploadConfig.getResourceHandler());
+                .antMatchers(adminConfig.getIgnoredPath());
     }
 
 }
