@@ -1,0 +1,35 @@
+# 百度ueditor图片上传地址，默认项目根目录或jar包所在父目录，也可以配置其他地方
+humki:
+  ueditor:
+    upload:
+      root-path: d:\\upload\\ueditor
+
+# 设置统一编码格式 utf-8,防止乱码
+server:
+  tomcat:
+    uri-encoding: utf-8
+spring:
+  http:
+    encoding:
+      enabled: true
+      force: true
+      charset: UTF-8
+  messages:
+    encoding: UTF-8
+
+  # json格式化时间
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  # JPA配置
+  jpa:
+    database: MYSQL
+    show-sql: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        dialect: org.hibernate.dialect.MySQL57Dialect

@@ -1,0 +1,10 @@
+# 都有默认配置，如有需要可修改
+#file:
+#  upload:
+#    max-file-size: 3MB
+#    max-request-size: 2MB
+#    max-image-size: 3MB
+#    location: d:\\upload\\temp
+#    root-path: d:\\upload\\file
+#    image-url-prefix: /public/image
+#    resource-handler: /public/image/**
