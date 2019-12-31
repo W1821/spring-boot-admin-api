@@ -57,7 +57,12 @@ public class BaseAspect {
                     userId,
                     request.getRemoteAddr(),
                     proceedingJoinPoint.getSignature().toString(),
-                    Arrays.stream(proceedingJoinPoint.getArgs()).map(GsonUtil::objToJsonString).collect(Collectors.toList()),
+                    Arrays.stream(proceedingJoinPoint.getArgs())
+                            .filter(arg -> !(arg instanceof HttpServletRequest))
+                            .filter(arg -> !(arg instanceof HttpServletResponse))
+                            .filter(arg -> !(arg instanceof Model))
+                            .map(GsonUtil::objToJsonString)
+                            .collect(Collectors.toList()),
                     GsonUtil.objToJsonString(result));
         } else {
             log.info("耗时 ={}ms, userId={}, ip={}, method={}, params={}",
