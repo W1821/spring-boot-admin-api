@@ -1,6 +1,7 @@
-package org.humki.baseadmin.base.controller;
+package org.humki.baseadmin.controller;
 
 
+import org.humki.baseadmin.base.controller.SystemBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,13 +16,13 @@ import java.io.IOException;
  * @author Kael
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping("")
 public class MainController extends SystemBaseController {
 
     /**
-     * 默认处理/main下说有的请求，全部转发到index.html
+     * index.html
      */
-    @RequestMapping("")
+    @RequestMapping({"", "/"})
     public void index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("routes", "路由跳转");
         request.getRequestDispatcher("index.html").forward(request, response);

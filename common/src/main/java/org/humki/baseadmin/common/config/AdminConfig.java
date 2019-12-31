@@ -1,13 +1,16 @@
 package org.humki.baseadmin.common.config;
 
 import lombok.Data;
+import org.humki.baseadmin.common.util.PathUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Arrays;
 
 /**
  * <br>
  * <b>功能：</b>基本配置<br>
-
+ *
  * <b>日期：</b>2017/4/11 23:27<br>
  *
  * @author Kael
@@ -27,6 +30,8 @@ public class AdminConfig {
      */
     private String defaultPassword = "admin123456";
 
+    private String[] resourceLocations;
+
     /**
      * 拦截器、权限验证忽略path
      */
@@ -34,9 +39,12 @@ public class AdminConfig {
             /* 静态资源 */
             "/",
             "/*.ico",
+            "/*.svg",
             "/*.js",
             "/*.css",
             "/*.html",
+
+            "/static/**",
             "/assets/**",
 
             /* swagger页面，TODO 未做安全限制，项目部署注意一下 */
@@ -47,11 +55,23 @@ public class AdminConfig {
             /* 前端访问防止404 */
             "/main/**",
 
-            /* web socket TODO 暂时忽略，便于测试*/
-            "/ws/**",
+            "/error",
 
-            /* 阿里数据库连接池监控 */
-            "/druid/**"
     };
 
+    public String[] getResourceLocations() {
+
+        if (this.resourceLocations == null) {
+            return null;
+        }
+
+        String[] resourceLocations = Arrays.stream(this.resourceLocations)
+                .filter(rl -> !PathUtil.isInvalidFilePath(rl))
+                .toArray(String[]::new);
+        if (resourceLocations.length == 0) {
+            return null;
+        }
+
+        return resourceLocations;
+    }
 }

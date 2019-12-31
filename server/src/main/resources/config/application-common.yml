@@ -2,7 +2,7 @@
 humki:
   ueditor:
     upload:
-      root-path: d:\\upload\\ueditor
+      root-path: d:\upload\ueditor
 
 # 设置统一编码格式 utf-8,防止乱码
 server:

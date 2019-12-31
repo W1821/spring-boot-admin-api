@@ -3,11 +3,15 @@ package org.humki.baseadmin.common.aspect;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.humki.baseadmin.common.util.GsonUtil;
+import org.springframework.ui.Model;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.stream.Collectors;
 
 /**
@@ -18,6 +22,12 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class BaseAspect {
+
+    private final static long THRESHOLD = 2000L;    // 耗时接口
+
+    private final static String ACCEPT = "Accept";
+
+    private final static String JSON_ACCEPT = "application/json";
 
     protected Object doAroundBase(ProceedingJoinPoint proceedingJoinPoint, Long userId) throws Throwable {
 
@@ -32,16 +42,51 @@ public class BaseAspect {
         // ob 为方法的返回值
         Object result = proceedingJoinPoint.proceed();
 
+        long consumedTime = System.currentTimeMillis() - startTime;
+
+        if (consumedTime > THRESHOLD) {
+            log.warn("耗时操作警告 ={}ms, userId={}, ip={}, method={}",
+                    consumedTime,
+                    userId,
+                    proceedingJoinPoint.getSignature().toString(),
+                    request == null ? "未知" : request.getRemoteAddr());
+        }
         // 记录下请求内容
-        log.info("耗时 ={}ms, userId={}, ip={}, method={}, params={}, response={}",
-                System.currentTimeMillis() - startTime,
-                userId,
-                request == null ? "未知" : request.getRemoteAddr(),
-                proceedingJoinPoint.getSignature().toString(),
-                Arrays.stream(proceedingJoinPoint.getArgs()).map(GsonUtil::objToJsonString).collect(Collectors.toList()),
-                GsonUtil.objToJsonString(result));
+        if (acceptIsJson(request)) {
+            // json请求支持响应日志
+            log.info("耗时 ={}ms, userId={}, ip={}, method={}, params={}, response={}",
+                    consumedTime,
+                    userId,
+                    request.getRemoteAddr(),
+                    proceedingJoinPoint.getSignature().toString(),
+                    Arrays.stream(proceedingJoinPoint.getArgs()).map(GsonUtil::objToJsonString).collect(Collectors.toList()),
+                    GsonUtil.objToJsonString(result));
+        } else {
+            log.info("耗时 ={}ms, userId={}, ip={}, method={}, params={}",
+                    consumedTime,
+                    userId,
+                    request == null ? "未知" : request.getRemoteAddr(),
+                    proceedingJoinPoint.getSignature().toString(),
+                    Arrays.stream(proceedingJoinPoint.getArgs())
+                            .filter(arg -> !(arg instanceof HttpServletRequest))
+                            .filter(arg -> !(arg instanceof HttpServletResponse))
+                            .filter(arg -> !(arg instanceof Model))
+                            .map(GsonUtil::objToJsonString)
+                            .collect(Collectors.toList()));
+        }
         return result;
 
+    }
+
+    /**
+     * 判断是否是json请求
+     */
+    private boolean acceptIsJson(HttpServletRequest request) {
+        if (request == null) {
+            return false;
+        }
+        String accept = request.getHeader(ACCEPT);
+        return JSON_ACCEPT.equals(accept);
     }
 
 }

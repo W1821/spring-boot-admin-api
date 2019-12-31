@@ -8,17 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * <br>
  * <b>功能：</b>MVC配置<br>
  * 例如：public/image/** -> 磁盘某个位置<br>
  * 例如：拦截器<br>
-
+ *
  * <b>日期：</b>2017/4/11 23:27<br>
  *
  * @author Kael
@@ -58,14 +60,24 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler(fileUploadConfig.getResourceHandler())
                 .addResourceLocations(getFileLocation(fileUploadConfig.getRootPath()));
 
-    }
 
-    private String getFileLocation(String rootPath) {
-        String fileUploadLocation = FILE_START + rootPath;
-        if (!fileUploadLocation.endsWith(File.separator)) {
-            fileUploadLocation = fileUploadLocation + File.separator;
+        // 静态资源位置
+        ResourceHandlerRegistration registration = registry.addResourceHandler("/**");
+
+        // 添加一个配置的静态资源位置
+        String[] resourceLocations = adminConfig.getResourceLocations();
+        if (resourceLocations != null) {
+            registration.addResourceLocations(getFileLocation(resourceLocations));
         }
-        return fileUploadLocation;
+
+        // spring默认静态资源位置
+        registration.addResourceLocations(
+                "classpath:/META-INF/resources/",
+                "classpath:/resources/",
+                "classpath:/static/",
+                "classpath:/public/");
+
+
     }
 
     /**
@@ -82,5 +94,23 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(fileUploadConfig.getResourceHandler())
                 .excludePathPatterns(ueditorUploadConfig.getResourceHandler());
     }
+
+    /**
+     * 静态资源以 file: 开头
+     *
+     * @param rootPaths
+     * @return
+     */
+    private String[] getFileLocation(String... rootPaths) {
+        return Arrays.stream(rootPaths)
+                .map(rootPath -> {
+                    String fileUploadLocation = FILE_START + rootPath;
+                    if (!fileUploadLocation.endsWith(File.separator)) {
+                        fileUploadLocation = fileUploadLocation + File.separator;
+                    }
+                    return fileUploadLocation;
+                }).toArray(String[]::new);
+    }
+
 
 }

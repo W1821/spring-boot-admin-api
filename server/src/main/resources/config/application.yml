@@ -13,3 +13,9 @@ logging:
   level:
     org:
       humki: debug
+
+
+admin:
+  config:
+    resource-locations:
+      - C:\Users\Admin\Desktop\aaa\angular
