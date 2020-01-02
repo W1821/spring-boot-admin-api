@@ -10,7 +10,7 @@ import org.humki.baseadmin.common.pojo.po.BasePO;
 import javax.persistence.*;
 
 /**
- * mysql支持id自增长，建议使用自增长主键
+ * uuid作为主键
  *
  * @author Kael
  */
@@ -19,14 +19,16 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Setter
 @Getter
-@Table(name = "area")
-public class AreaModel extends BasePO {
+@Table(name = "demo")
+@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
+public class DemoModel extends BasePO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "jpa-uuid")
+    @Column(length = 32)
+    private String id;
 
-    private String areaName;
+    private String demoName;
 
 
 }

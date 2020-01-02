@@ -26,8 +26,7 @@ public class AreaService extends SystemBaseService {
      */
     public ResponseMessage save() {
         AreaModel model = new AreaModel();
-        model.setP("p");
-        model.setS("s");
+        model.setAreaName("p");
         areaRepository.save(model);
         return ResponseMessageUtil.success("成功");
     }
