@@ -6,12 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import org.humki.baseadmin.common.pojo.bo.BaseBO;
-import org.humki.baseadmin.common.config.AdminConfig;
-import org.humki.baseadmin.common.constant.GlobalEnum;
-import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
-import org.humki.baseadmin.common.util.ExceptionUtil;
-import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.humki.baseadmin.base.constant.UserEnum;
 import org.humki.baseadmin.base.pojo.dto.role.BaseRoleDTO;
 import org.humki.baseadmin.base.pojo.dto.user.UserDTO;
@@ -20,12 +14,18 @@ import org.humki.baseadmin.base.pojo.po.RoleModel;
 import org.humki.baseadmin.base.pojo.po.UserModel;
 import org.humki.baseadmin.base.repository.RoleRepository;
 import org.humki.baseadmin.base.repository.UserRepository;
+import org.humki.baseadmin.common.config.AdminConfig;
+import org.humki.baseadmin.common.constant.GlobalEnum;
+import org.humki.baseadmin.common.pojo.bo.BaseBO;
+import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
+import org.humki.baseadmin.common.util.ExceptionUtil;
+import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Predicate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -125,7 +125,7 @@ public class UserBO extends BaseBO {
         model.setSuperAdmin(UserEnum.SUPER_ADMIN.NO.getKey());
         model.setDeleted(GlobalEnum.DELETED.NO.getKey());
         // 创建时间
-        model.setCreateTime(new Date());
+        model.setCreateTime(LocalDateTime.now());
         return model;
     }
 
@@ -169,7 +169,7 @@ public class UserBO extends BaseBO {
      */
     private void logicDelete() {
         model.setDeleted(GlobalEnum.DELETED.YES.getKey());
-        model.setUpdateTime(new Date());
+        model.setUpdateTime(LocalDateTime.now());
         repository.save(model);
     }
 
@@ -185,7 +185,7 @@ public class UserBO extends BaseBO {
         model.setPhoneNumber(dto.getPhoneNumber());
         model.setHeadPictureUrl(dto.getHeadPictureUrl());
         model.setAccountStatus(Integer.valueOf(dto.getAccountStatus()));
-        model.setUpdateTime(new Date());
+        model.setUpdateTime(LocalDateTime.now());
     }
 
 }

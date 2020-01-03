@@ -4,7 +4,6 @@ package org.humki.baseadmin.common.util;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
-import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class FileUtil {
     }
 
     /**
-     * 复制文件
+     * NIO 复制文件
      * 通过该方式复制文件文件越大速度越是明显
      *
      * @param file       需要处理的文件
@@ -46,36 +45,27 @@ public class FileUtil {
      */
     public static boolean copy(File file, String targetFile) {
         try (
-                FileInputStream fin = new FileInputStream(file);
-                FileOutputStream fout = new FileOutputStream(new File(targetFile))
+                FileInputStream srcFIS = new FileInputStream(file);
+                FileOutputStream targetFOS = new FileOutputStream(new File(targetFile))
         ) {
-            FileChannel in = fin.getChannel();
-            FileChannel out = fout.getChannel();
-            //设定缓冲区
-            ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
-            while (in.read(buffer) != -1) {
-                //准备写入，防止其他读取，锁住文件
-                buffer.flip();
-                out.write(buffer);
-                //准备读取。将缓冲区清理完毕，移动文件内部指针
-                buffer.clear();
-            }
+            FileChannel srcFISChannel = srcFIS.getChannel();
+            FileChannel targetFOSChannel = targetFOS.getChannel();
+            srcFISChannel.transferTo(0, srcFISChannel.size(), targetFOSChannel);
         } catch (IOException e) {
             log.error("复制文件出错", e);
         }
         return false;
     }
 
-
     /**
-     * 创建多级目录
+     * 创建目录
      *
      * @param paths 需要创建的目录
      * @return 是否成功
      */
-    public static boolean createPaths(String paths) {
+    public static boolean createDirectory(String paths) {
         File dir = new File(paths);
-        return !dir.exists() && dir.mkdir();
+        return createDirectory(dir);
     }
 
     /**
@@ -188,8 +178,9 @@ public class FileUtil {
      */
     public static void copyDir(File filePath, String targetPath) {
         File targetFile = new File(targetPath);
-        if (!targetFile.exists()) {
-            createPaths(targetPath);
+        if (!targetFile.exists() && !targetFile.mkdirs()) {
+            log.error("创建多级目录失败");
+            return;
         }
         File[] files = filePath.listFiles();
         if (files == null) {

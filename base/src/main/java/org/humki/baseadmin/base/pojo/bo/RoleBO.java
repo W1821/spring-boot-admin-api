@@ -19,8 +19,8 @@ import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,7 +96,7 @@ public class RoleBO extends BaseBO {
         model.setRoleStatus(Integer.valueOf(dto.getRoleStatus()));
         // 默认未删除
         model.setDeleted(GlobalEnum.DELETED.NO.getKey());
-        model.setCreateTime(new Date());
+        model.setCreateTime(LocalDateTime.now());
         return model;
     }
 
@@ -144,7 +144,7 @@ public class RoleBO extends BaseBO {
      */
     private void logicDelete() {
         model.setDeleted(GlobalEnum.DELETED.YES.getKey());
-        model.setUpdateTime(new Date());
+        model.setUpdateTime(LocalDateTime.now());
         repository.save(model);
     }
 
@@ -156,7 +156,7 @@ public class RoleBO extends BaseBO {
         model.setRoleName(dto.getRoleName());
         model.setRoleStatus(Integer.valueOf(dto.getRoleStatus()));
         model.setDescription(dto.getDescription());
-        model.setUpdateTime(new Date());
+        model.setUpdateTime(LocalDateTime.now());
     }
 
     /**

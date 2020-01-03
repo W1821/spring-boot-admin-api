@@ -8,7 +8,7 @@ import org.humki.baseadmin.common.pojo.dto.BaseDTO;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -49,7 +49,7 @@ public class UserDTO extends BaseDTO {
     private String accountStatus;
 
     @ApiModelProperty(value = "创建时间", example = "2018-05-06 12:48:30")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     @ApiModelProperty(value = "角色", example = "[]")
     private List<BaseRoleDTO> roles;

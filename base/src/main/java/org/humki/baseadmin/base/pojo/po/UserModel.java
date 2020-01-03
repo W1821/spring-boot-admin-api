@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.humki.baseadmin.common.pojo.po.BasePO;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -46,11 +46,9 @@ public class UserModel extends BasePO {
     private Integer deleted;
 
     @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createTime;
+    private LocalDateTime createTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 超级管理员，0：否，1：是
@@ -61,7 +59,7 @@ public class UserModel extends BasePO {
      * 用户多对多关联角色
      */
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    @ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<RoleModel> roles;
 
 }

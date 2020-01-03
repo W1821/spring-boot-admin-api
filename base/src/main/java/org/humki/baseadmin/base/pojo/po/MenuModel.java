@@ -6,7 +6,7 @@ import org.hibernate.annotations.NotFoundAction;
 import org.humki.baseadmin.common.pojo.po.BasePO;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -65,13 +65,11 @@ public class MenuModel extends BasePO {
      * 创建时间
      */
     @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 修改时间
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 按钮集合

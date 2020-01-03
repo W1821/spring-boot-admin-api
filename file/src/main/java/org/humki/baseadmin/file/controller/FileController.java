@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 文件上传
@@ -55,12 +57,16 @@ public class FileController extends BaseController {
      * @return 图片的url
      */
     @RequestMapping(value = "/upload/image", method = RequestMethod.POST)
-    public ResponseMessage<String> uploadImageSingle(@RequestParam("file") MultipartFile file) {
+    public ResponseMessage<String> uploadImage(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             ResponseMessageUtil.error(GlobalCodeEnum.ErrorCode.ERROR_1100);
         }
         // 判断文件是否是图片
-        if (!isImage(file)) {
+        if (isNotSupportedImage(file)) {
+            ResponseMessageUtil.error(GlobalCodeEnum.ErrorCode.ERROR_1101);
+        }
+        // 判断图片是否是真图片
+        if (UploadFileUtil.isRealImage(file)) {
             ResponseMessageUtil.error(GlobalCodeEnum.ErrorCode.ERROR_1101);
         }
         String path = fileService.uploadImage(file);
@@ -68,31 +74,10 @@ public class FileController extends BaseController {
     }
 
     /**
-     * 多图片上传
-     *
-     * @param request http请求
-     * @return 多个图片的url
-     */
-    @RequestMapping(value = "/upload/multiple/image", method = RequestMethod.POST)
-    public ResponseMessage<List<String>> uploadImageMultiple(HttpServletRequest request) {
-        List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
-        List<String> imageUrlList = new ArrayList<>();
-        files.forEach(file -> {
-            if (file != null && isImage(file)) {
-                String imageUrl = fileService.uploadImage(file);
-                if (imageUrl != null) {
-                    imageUrlList.add(imageUrl);
-                }
-            }
-        });
-        return ResponseMessageUtil.success(imageUrlList);
-    }
-
-    /**
      * 判断文件是否是图片
      */
-    private boolean isImage(MultipartFile file) {
-        return GlobalEnum.IMAGE_FIELDS.containsIgnoreCase(UploadFileUtil.getFileSuffix(file.getOriginalFilename()));
+    private boolean isNotSupportedImage(MultipartFile file) {
+        return !GlobalEnum.IMAGE_FIELDS.containsIgnoreCase(UploadFileUtil.getFileSuffix(file.getOriginalFilename()));
     }
 
 }

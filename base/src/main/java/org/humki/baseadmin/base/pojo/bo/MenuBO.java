@@ -3,21 +3,18 @@ package org.humki.baseadmin.base.pojo.bo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import org.apache.commons.lang3.StringUtils;
 import org.humki.baseadmin.base.pojo.dto.menu.ButtonDTO;
 import org.humki.baseadmin.base.pojo.dto.menu.MenuDTO;
 import org.humki.baseadmin.base.pojo.po.ButtonModel;
 import org.humki.baseadmin.base.pojo.po.MenuModel;
 import org.humki.baseadmin.base.repository.MenuRepository;
-import org.humki.baseadmin.common.constant.GlobalCodeEnum;
-import org.humki.baseadmin.common.constant.GlobalConstant;
 import org.humki.baseadmin.common.constant.GlobalEnum;
 import org.humki.baseadmin.common.pojo.bo.BaseBO;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ExceptionUtil;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -50,7 +47,7 @@ public class MenuBO extends BaseBO {
         if (dto.getId() == null) {
             // 新增
             dtoToPo();
-            model.setCreateTime(new Date());
+            model.setCreateTime(LocalDateTime.now());
             model.setDeleted(GlobalEnum.DELETED.NO.getKey());
         } else {
             update();
@@ -130,7 +127,7 @@ public class MenuBO extends BaseBO {
      */
     private void logicDelete() {
         model.setDeleted(GlobalEnum.DELETED.YES.getKey());
-        model.setUpdateTime(new Date());
+        model.setUpdateTime(LocalDateTime.now());
         repository.save(model);
     }
 
@@ -151,7 +148,7 @@ public class MenuBO extends BaseBO {
     private void update() {
         findById();
         setModelByDto();
-        model.setUpdateTime(new Date());
+        model.setUpdateTime(LocalDateTime.now());
     }
 
     private void setModelByDto() {

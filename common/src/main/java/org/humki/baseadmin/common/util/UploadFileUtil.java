@@ -2,10 +2,9 @@ package org.humki.baseadmin.common.util;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.UUID;
@@ -14,7 +13,7 @@ import java.util.UUID;
 /**
  * <br>
  * <b>功能：</b>文件工具类<br>
-
+ *
  * <b>日期：</b>2017/4/11 23:27<br>
  *
  * @author Kael
@@ -45,6 +44,10 @@ public class UploadFileUtil {
         String fileSuffix = SPOT + getImageSuffixByBase64(arr[0]);
         String fileName = uuidFileName + fileSuffix;
         byte[] fileBytes = Base64Util.decode(arr[1]);
+        // 判断是否是真图片
+        if (!isRealImage(fileBytes)) {
+            return null;
+        }
         return writeSingleFileToDisk(fileBytes, fileName, rootPath, urlPrefix);
     }
 
@@ -87,6 +90,30 @@ public class UploadFileUtil {
      */
     public static boolean checkIsBase64Image(String base64) {
         return base64 != null && base64.startsWith(UploadFileUtil.BASE64_START_FLAG);
+    }
+
+    /**
+     * 判断是否是真图片
+     */
+    public static boolean isRealImage(MultipartFile file) {
+        try {
+            BufferedImage image = ImageIO.read(file.getInputStream());
+            return image != null && image.getWidth() > 0 && image.getHeight() > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * 判断是否是真图片
+     */
+    private static boolean isRealImage(byte[] bytes) {
+        try (InputStream is = new ByteArrayInputStream(bytes)) {
+            BufferedImage image = ImageIO.read(is);
+            return image != null && image.getWidth() > 0 && image.getHeight() > 0;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**

@@ -4,12 +4,11 @@ package org.humki.baseadmin.base.pojo.dto.role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import org.humki.baseadmin.base.pojo.dto.menu.MenuDTO;
 import org.humki.baseadmin.common.pojo.dto.BaseDTO;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public class RoleDTO extends BaseDTO {
     private String description;
 
     @ApiModelProperty(value = "创建时间")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     @ApiModelProperty(value = "角色关联菜单的id")
     private List<Long> menuIds;

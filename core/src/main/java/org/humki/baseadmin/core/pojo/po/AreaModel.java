@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.humki.baseadmin.common.pojo.po.BasePO;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * mysql支持id自增长，建议使用自增长主键
@@ -28,5 +29,14 @@ public class AreaModel extends BasePO {
 
     private String areaName;
 
+    /**
+     * 创建时间
+     */
+    @Column(updatable = false)
+    private LocalDateTime createTime;
+    /**
+     * 修改时间
+     */
+    private LocalDateTime updateTime;
 
 }

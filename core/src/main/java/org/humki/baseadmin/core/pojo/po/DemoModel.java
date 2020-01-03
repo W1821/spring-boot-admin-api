@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.humki.baseadmin.common.pojo.po.BasePO;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * uuid作为主键
@@ -30,5 +31,14 @@ public class DemoModel extends BasePO {
 
     private String demoName;
 
+    /**
+     * 创建时间
+     */
+    @Column(updatable = false)
+    private LocalDateTime createTime;
+    /**
+     * 修改时间
+     */
+    private LocalDateTime updateTime;
 
 }
