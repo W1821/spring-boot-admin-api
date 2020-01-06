@@ -14,7 +14,7 @@
     <properties>
         <gson.version>2.8.6</gson.version>
         <easypoi-base.version>2.4.0</easypoi-base.version>
-        <!-- 需要等待升级版本，此版本和spring-boot 2.x不兼容 -->
+        <!-- TODO 需要等待升级版本，此版本和spring-boot 2.x不兼容 -->
         <swagger2.version>2.9.2</swagger2.version>
         <commons-codec.version>1.13</commons-codec.version>
         <guava.version>28.1-jre</guava.version>
