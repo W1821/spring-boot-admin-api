@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : localhost
 Source Server Version : 50720
 Source Host           : localhost:3306
-Source Database       : base_admin_api_001
+Source Database       : base_admin_api_base
 
 Target Server Type    : MYSQL
 Target Server Version : 50720
 File Encoding         : 65001
 
-Date: 2019-12-27 18:03:01
+Date: 2020-01-06 14:43:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,7 +28,7 @@ CREATE TABLE `button` (
   `menu_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKf63llkiy6dekuxkbbxxyawmxw` (`menu_id`),
-  CONSTRAINT `FKf63llkiy6dekuxkbbxxyawmxw` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`)
+  CONSTRAINT `button_ibfk_1` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -99,7 +99,7 @@ CREATE TABLE `role` (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', '2019-12-27 10:00:49.832000', '0', '管理员', '管理员', '0', null);
+INSERT INTO `role` VALUES ('1', '2019-12-27 10:00:49.832000', '0', '管理员', '管理员', '0', '2020-01-03 03:39:58.521000');
 
 -- ----------------------------
 -- Table structure for role_button
@@ -110,8 +110,8 @@ CREATE TABLE `role_button` (
   `button_id` bigint(20) NOT NULL,
   PRIMARY KEY (`role_id`,`button_id`),
   KEY `FK6qydmhre4n7es8j89q4iorqvo` (`button_id`),
-  CONSTRAINT `FK6qydmhre4n7es8j89q4iorqvo` FOREIGN KEY (`button_id`) REFERENCES `button` (`id`),
-  CONSTRAINT `FKn7ciijco27l47o88he49nk068` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+  CONSTRAINT `role_button_ibfk_1` FOREIGN KEY (`button_id`) REFERENCES `button` (`id`),
+  CONSTRAINT `role_button_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -135,8 +135,8 @@ CREATE TABLE `role_menu` (
   `menu_id` bigint(20) NOT NULL,
   PRIMARY KEY (`role_id`,`menu_id`),
   KEY `FKfg4e2mb2318tph615gh44ll3` (`menu_id`),
-  CONSTRAINT `FKfg4e2mb2318tph615gh44ll3` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`),
-  CONSTRAINT `FKqyvxw2gg2qk0wld3bqfcb58vq` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+  CONSTRAINT `role_menu_ibfk_1` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`),
+  CONSTRAINT `role_menu_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -153,7 +153,6 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `account_status` int(11) DEFAULT NULL,
-  `create_time` datetime(6) DEFAULT NULL,
   `deleted` int(11) DEFAULT NULL,
   `head_picture_url` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
@@ -161,14 +160,15 @@ CREATE TABLE `user` (
   `super_admin` int(11) DEFAULT NULL,
   `update_time` datetime(6) DEFAULT NULL,
   `user_name` varchar(255) DEFAULT NULL,
+  `create_time` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', '0', '2019-12-27 17:26:02.000000', '0', '', '{bcrypt}$2a$10$vCxtGbkZ5FZOox0w4Y0aSeiR8C4PVM4I727HAQw5vooYyGEn4bsaa', '15256639988', '1', '2019-12-27 17:25:55.000000', '超级大boss');
-INSERT INTO `user` VALUES ('2', '0', '2019-12-27 10:02:03.663000', '0', null, '{bcrypt}$2a$10$s5gBtxOGWi8K9618XrpRceeXqvx/hoECs57aXyCS7lwd1GX0TQbHO', '18888888888', '0', '2019-12-27 10:02:39.251000', '管理员A');
+INSERT INTO `user` VALUES ('1', '0', '0', '/public/image/2020/1/3/8488e75b-a209-48f5-b0a5-0c4367d6c6d4.png', '{bcrypt}$2a$10$vCxtGbkZ5FZOox0w4Y0aSeiR8C4PVM4I727HAQw5vooYyGEn4bsaa', '15256639988', '1', '2020-01-03 03:39:50.399000', '超级大boss', '2020-01-03 11:15:25.000000');
+INSERT INTO `user` VALUES ('2', '0', '0', null, '{bcrypt}$2a$10$s5gBtxOGWi8K9618XrpRceeXqvx/hoECs57aXyCS7lwd1GX0TQbHO', '18888888888', '0', '2019-12-27 10:02:39.251000', '管理员A', '2020-01-03 11:15:29.000000');
 
 -- ----------------------------
 -- Table structure for user_role
@@ -179,11 +179,12 @@ CREATE TABLE `user_role` (
   `role_id` bigint(20) NOT NULL,
   PRIMARY KEY (`user_id`,`role_id`),
   KEY `FKa68196081fvovjhkek5m97n3y` (`role_id`),
-  CONSTRAINT `FK859n2jvi8ivhui0rl0esws6o` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `FKa68196081fvovjhkek5m97n3y` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+  CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_role
 -- ----------------------------
+INSERT INTO `user_role` VALUES ('1', '1');
 INSERT INTO `user_role` VALUES ('2', '1');
