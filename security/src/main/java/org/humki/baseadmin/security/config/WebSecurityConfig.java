@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.humki.baseadmin.common.config.AdminConfig;
 import org.humki.baseadmin.common.constant.GlobalConstant;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
-import org.humki.baseadmin.common.util.GsonUtil;
+import org.humki.baseadmin.common.util.FastJsonUtil;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.humki.baseadmin.security.entrypoint.RestAuthenticationEntryPoint;
 import org.humki.baseadmin.security.service.UserDetailsServiceImpl;
@@ -113,7 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         try {
             @Cleanup PrintWriter out = response.getWriter();
             ResponseMessage message = ResponseMessageUtil.success();
-            out.append(GsonUtil.objToJsonString(message));
+            out.append(FastJsonUtil.objToJsonString(message));
         } catch (IOException ignored) {
         }
     }

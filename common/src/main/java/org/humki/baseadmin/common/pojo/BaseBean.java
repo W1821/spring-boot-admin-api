@@ -1,6 +1,6 @@
 package org.humki.baseadmin.common.pojo;
 
-import org.humki.baseadmin.common.util.GsonUtil;
+import org.humki.baseadmin.common.util.FastJsonUtil;
 
 import java.io.Serializable;
 
@@ -12,6 +12,6 @@ import java.io.Serializable;
 public class BaseBean implements Serializable {
     @Override
     public String toString() {
-        return GsonUtil.objToJsonString(this);
+        return FastJsonUtil.objToJsonString(this);
     }
 }

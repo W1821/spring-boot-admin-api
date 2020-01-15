@@ -3,7 +3,7 @@ package org.humki.baseadmin.common.advice;
 import lombok.extern.slf4j.Slf4j;
 import org.humki.baseadmin.common.exception.AdminException;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
-import org.humki.baseadmin.common.util.GsonUtil;
+import org.humki.baseadmin.common.util.FastJsonUtil;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -59,7 +59,7 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(value = AdminException.class)
     public ResponseMessage myErrorHandler(AdminException ex) {
         ResponseMessage responseMessage = ex.getResponseMessage();
-        log.error("拦截捕捉自定义异常 - message = {}", GsonUtil.objToJsonString(responseMessage));
+        log.error("拦截捕捉自定义异常 - message = {}", FastJsonUtil.objToJsonString(responseMessage));
         return responseMessage;
     }
 

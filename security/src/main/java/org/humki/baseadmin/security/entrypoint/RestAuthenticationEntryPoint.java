@@ -4,7 +4,7 @@ import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import org.humki.baseadmin.common.constant.GlobalConstant;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
-import org.humki.baseadmin.common.util.GsonUtil;
+import org.humki.baseadmin.common.util.FastJsonUtil;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -37,7 +37,7 @@ public class RestAuthenticationEntryPoint extends BasicAuthenticationEntryPoint 
         response.setContentType(GlobalConstant.CONTENT_TYPE_APPLICATION_JSON);
         ResponseMessage message = ResponseMessageUtil.buildNoAuthErrorMessage();
         @Cleanup PrintWriter out = response.getWriter();
-        out.append(GsonUtil.objToJsonString(message));
+        out.append(FastJsonUtil.objToJsonString(message));
     }
 
     @Override

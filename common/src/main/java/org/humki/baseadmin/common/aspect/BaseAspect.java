@@ -2,7 +2,7 @@ package org.humki.baseadmin.common.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.humki.baseadmin.common.util.GsonUtil;
+import org.humki.baseadmin.common.util.FastJsonUtil;
 import org.springframework.ui.Model;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -61,9 +61,9 @@ public class BaseAspect {
                             .filter(arg -> !(arg instanceof HttpServletRequest))
                             .filter(arg -> !(arg instanceof HttpServletResponse))
                             .filter(arg -> !(arg instanceof Model))
-                            .map(GsonUtil::objToJsonString)
+                            .map(FastJsonUtil::objToJsonString)
                             .collect(Collectors.toList()),
-                    GsonUtil.objToJsonString(result));
+                    FastJsonUtil.objToJsonString(result));
         } else {
             log.info("耗时 ={}ms, userId={}, ip={}, method={}, params={}",
                     consumedTime,
@@ -74,7 +74,7 @@ public class BaseAspect {
                             .filter(arg -> !(arg instanceof HttpServletRequest))
                             .filter(arg -> !(arg instanceof HttpServletResponse))
                             .filter(arg -> !(arg instanceof Model))
-                            .map(GsonUtil::objToJsonString)
+                            .map(FastJsonUtil::objToJsonString)
                             .collect(Collectors.toList()));
         }
         return result;
