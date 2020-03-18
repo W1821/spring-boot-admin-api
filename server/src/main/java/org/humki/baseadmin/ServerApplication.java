@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 /**
  * {@link EnableAutoConfiguration} :启动定时器
@@ -31,6 +32,11 @@ public class ServerApplication {
     @PostConstruct
     public void init() {
         log.info("应用启动");
+    }
+
+    @PreDestroy
+    public void destroy() {
+        log.info("应用关闭");
     }
 
 }
