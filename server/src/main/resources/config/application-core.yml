@@ -1,6 +1,8 @@
 spring:
   datasource:
     core:
-      jdbc-url: jdbc:mysql://localhost:3306/base_admin_api_core?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+      ######## 注意serverTimezone 要选择东8区的Hongkong、Asia/Shanghai或者Asia/Hongkong 不然时间不对 ########
+      ######## 注意rewriteBatchedStatements=true 启用批量操作 ########
+      jdbc-url: jdbc:mysql://localhost:3306/base_admin_api_core?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Hongkong&rewriteBatchedStatements=true
       username: root
       password: root
