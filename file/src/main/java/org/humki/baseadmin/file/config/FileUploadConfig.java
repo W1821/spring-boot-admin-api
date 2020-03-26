@@ -1,8 +1,8 @@
 package org.humki.baseadmin.file.config;
 
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 import org.humki.baseadmin.common.util.PathUtil;
+import org.humki.baseadmin.common.util.StringUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -55,14 +55,14 @@ public class FileUploadConfig {
     private String resourceHandler = "/public/image/**";
 
     public long getMaxSize(String size) {
-        if (StringUtils.isEmpty(size)) {
+        if (StringUtil.isEmpty(size)) {
             return -1;
         }
         size = size.toUpperCase().substring(0, size.length() - 2);
         if (size.endsWith(KB)) {
-            return Long.valueOf(size) * 1024L;
+            return Long.parseLong(size) * 1024L;
         } else {
-            return size.endsWith(MB) ? Long.valueOf(size) * 1024L * 1024L : Long.valueOf(size);
+            return size.endsWith(MB) ? Long.parseLong(size) * 1024L * 1024L : Long.parseLong(size);
         }
     }
 

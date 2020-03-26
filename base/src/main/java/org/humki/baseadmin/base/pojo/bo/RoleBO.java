@@ -2,7 +2,6 @@ package org.humki.baseadmin.base.pojo.bo;
 
 import com.google.common.collect.Sets;
 import lombok.*;
-import org.apache.commons.lang3.StringUtils;
 import org.humki.baseadmin.base.pojo.dto.role.RoleDTO;
 import org.humki.baseadmin.base.pojo.dto.role.RoleSearchDTO;
 import org.humki.baseadmin.base.pojo.po.ButtonModel;
@@ -17,6 +16,7 @@ import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ExceptionUtil;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
+import org.humki.baseadmin.common.util.StringUtil;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
@@ -106,10 +106,10 @@ public class RoleBO extends BaseBO<RoleDTO> {
     public static Specification<RoleModel> createSpecification(RoleSearchDTO dto) {
         return (root, cq, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (StringUtils.isNotEmpty(dto.getRoleName())) {
+            if (StringUtil.isNotEmpty(dto.getRoleName())) {
                 predicates.add(cb.like(root.get("roleName"), dto.getRoleName() + "%"));
             }
-            if (StringUtils.isNotEmpty(dto.getRoleStatus())) {
+            if (StringUtil.isNotEmpty(dto.getRoleStatus())) {
                 predicates.add(cb.equal(root.get("roleStatus"), dto.getRoleStatus()));
             }
             predicates.add(cb.equal(root.get("deleted"), GlobalEnum.DELETED.NO.getKey()));

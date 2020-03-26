@@ -1,7 +1,7 @@
 package org.humki.baseadmin.common.service;
 
-import org.apache.commons.lang3.StringUtils;
 import org.humki.baseadmin.common.pojo.dto.base.page.PageDTO;
+import org.humki.baseadmin.common.util.StringUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,8 +19,8 @@ public class BaseService {
      */
     protected Pageable getPageable(PageDTO dto) {
         // 如果有排序
-        if (!StringUtils.isEmpty(dto.getSortField())) {
-            boolean isDesc = !StringUtils.isEmpty(dto.getSortOrder()) && dto.getSortOrder().contains("desc");
+        if (!StringUtil.isEmpty(dto.getSortField())) {
+            boolean isDesc = !StringUtil.isEmpty(dto.getSortOrder()) && dto.getSortOrder().contains("desc");
             return isDesc ? getPageableDesc(dto) : getPageableAsc(dto);
         }
         return PageRequest.of(dto.getIndex(), dto.getSize());

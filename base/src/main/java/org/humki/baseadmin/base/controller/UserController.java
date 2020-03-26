@@ -2,7 +2,6 @@ package org.humki.baseadmin.base.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
 import org.humki.baseadmin.base.pojo.dto.user.ModifyPwdDTO;
 import org.humki.baseadmin.base.pojo.dto.user.UserDTO;
 import org.humki.baseadmin.base.pojo.dto.user.UserSearchDTO;
@@ -12,6 +11,7 @@ import org.humki.baseadmin.common.constant.GlobalCodeEnum;
 import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
+import org.humki.baseadmin.common.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -86,7 +86,7 @@ public class UserController extends BaseBaseController {
     @ApiOperation(value = "修改密码")
     @RequestMapping(value = "/modify/ownPwd", method = RequestMethod.POST)
     public ResponseMessage<EmptyData> modifyOwnPassword(@Valid @RequestBody ModifyPwdDTO dto) {
-        if (!StringUtils.equals(dto.getNewPwd(), dto.getVerifiedPwd())) {
+        if (!StringUtil.equals(dto.getNewPwd(), dto.getVerifiedPwd())) {
             return ResponseMessageUtil.error(GlobalCodeEnum.ErrorCode.ERROR_1051);
         }
         return userService.modifyOwnPassword(dto);

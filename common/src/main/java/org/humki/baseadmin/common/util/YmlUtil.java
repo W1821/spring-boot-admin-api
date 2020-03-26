@@ -1,7 +1,5 @@
 package org.humki.baseadmin.common.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +85,7 @@ public class YmlUtil {
     private static Map<String, String> getSourceTreeMap(List<String> lines) {
         Map<String, String> sourceMap = new TreeMap<>();
         for (String line : lines) {
-            if (!StringUtils.isEmpty(line) && !line.startsWith("#")) {
+            if (!StringUtil.isEmpty(line) && !line.startsWith("#")) {
                 String key = line.substring(0, line.indexOf("="));
                 String value = line.substring(line.indexOf("=") + 1);
                 sourceMap.put(key, value);

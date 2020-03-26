@@ -4,7 +4,6 @@ package org.humki.baseadmin.base.service;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.humki.baseadmin.base.pojo.bo.MenuBO;
 import org.humki.baseadmin.base.pojo.bo.RoleBO;
 import org.humki.baseadmin.base.pojo.bo.UserBO;
@@ -19,6 +18,7 @@ import org.humki.baseadmin.common.constant.GlobalEnum;
 import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
+import org.humki.baseadmin.common.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,7 +73,7 @@ public class MenuService extends BaseBaseService {
     @Transactional(rollbackFor = Exception.class)
     public ResponseMessage<EmptyData> save(MenuDTO dto) {
 
-        if (StringUtils.isNotEmpty(dto.getPids())) {
+        if (StringUtil.isNotEmpty(dto.getPids())) {
             String[] pids = dto.getPids().split(GlobalConstant.COMMA);
             switch (pids.length) {
                 case 0:
@@ -247,7 +247,7 @@ public class MenuService extends BaseBaseService {
     }
 
     private int getMenuDepth(MenuDTO menuDTO) {
-        if (StringUtils.isEmpty(menuDTO.getPids())) {
+        if (StringUtil.isEmpty(menuDTO.getPids())) {
             return 0;
         }
         return menuDTO.getPids().split(",").length;

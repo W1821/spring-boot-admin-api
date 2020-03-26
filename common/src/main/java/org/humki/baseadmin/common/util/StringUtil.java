@@ -18,6 +18,13 @@ public class StringUtil {
     }
 
     /**
+     * 判断是否存在
+     */
+    public static boolean isNotEmpty(String data) {
+        return !isEmpty(data);
+    }
+
+    /**
      * 判断是否相等
      */
     public static boolean equals(String str1, String str2) {

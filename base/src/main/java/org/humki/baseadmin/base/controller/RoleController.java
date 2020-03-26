@@ -2,7 +2,6 @@ package org.humki.baseadmin.base.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
 import org.humki.baseadmin.base.pojo.dto.role.RoleDTO;
 import org.humki.baseadmin.base.pojo.dto.role.RoleSearchDTO;
 import org.humki.baseadmin.base.service.RoleService;
@@ -10,6 +9,7 @@ import org.humki.baseadmin.common.constant.GlobalCodeEnum;
 import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
+import org.humki.baseadmin.common.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +54,7 @@ public class RoleController extends BaseBaseController {
         if (dto.getId() != null) {
             return ResponseMessageUtil.error(GlobalCodeEnum.ErrorCode.ERROR_1031);
         }
-        if (StringUtils.isEmpty(dto.getRoleName())) {
+        if (StringUtil.isEmpty(dto.getRoleName())) {
             return ResponseMessageUtil.error(GlobalCodeEnum.ErrorCode.ERROR_1032);
         }
         return roleService.save(dto);
@@ -66,7 +66,7 @@ public class RoleController extends BaseBaseController {
         if (dto.getId() == null) {
             return ResponseMessageUtil.error(GlobalCodeEnum.ErrorCode.ERROR_1031);
         }
-        if (StringUtils.isEmpty(dto.getRoleName())) {
+        if (StringUtil.isEmpty(dto.getRoleName())) {
             return ResponseMessageUtil.error(GlobalCodeEnum.ErrorCode.ERROR_1032);
         }
         return roleService.save(dto);
