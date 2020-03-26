@@ -18,12 +18,6 @@ import java.util.List;
 public class FileUtil {
 
     /**
-     * Buffer的大小
-     */
-    private static final Integer BUFFER_SIZE = 1024 * 1024 * 10;
-
-
-    /**
      * 复制文件
      *
      * @param resourcePath 源文件
@@ -117,9 +111,6 @@ public class FileUtil {
      */
     public static boolean deleteDir(File file) {
         List<File> files = listFileAll(file);
-        if (files == null) {
-            return true;
-        }
         for (File f : files) {
             if (f.isDirectory()) {
                 deleteDir(f);
@@ -228,7 +219,7 @@ public class FileUtil {
         try (
                 FileOutputStream fileOutputStream = new FileOutputStream(new File(path));
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
-                BufferedWriter writer = new BufferedWriter(outputStreamWriter);
+                BufferedWriter writer = new BufferedWriter(outputStreamWriter)
         ) {
             for (String line : data) {
                 writer.write(line);
@@ -253,7 +244,7 @@ public class FileUtil {
         try (
                 FileInputStream fileInputStream = new FileInputStream(new File(path));
                 InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, charset);
-                BufferedReader read = new BufferedReader(inputStreamReader);
+                BufferedReader read = new BufferedReader(inputStreamReader)
         ) {
             String line;
             while ((line = read.readLine()) != null) {

@@ -3,6 +3,7 @@ package org.humki.baseadmin.common.exception;
 import lombok.Getter;
 
 import org.humki.baseadmin.common.constant.GlobalCodeEnum;
+import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 
 /**
@@ -15,10 +16,10 @@ import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 @Getter
 public class AdminException extends RuntimeException {
 
-    private ResponseMessage responseMessage;
+    private ResponseMessage<EmptyData> responseMessage;
 
     public AdminException(GlobalCodeEnum.ErrorCode errorCode) {
-        this.responseMessage = ResponseMessage.builder()
+        this.responseMessage = ResponseMessage.<EmptyData>builder()
                 .code(errorCode.getKey())
                 .msg(errorCode.getValue())
                 .build();

@@ -2,6 +2,7 @@ package org.humki.baseadmin.common.advice;
 
 import lombok.extern.slf4j.Slf4j;
 import org.humki.baseadmin.common.exception.AdminException;
+import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.FastJsonUtil;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
@@ -28,7 +29,7 @@ public class ExceptionHandlerAdvice {
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public ResponseMessage errorHandler(Exception ex) {
+    public ResponseMessage<EmptyData> errorHandler(Exception ex) {
         log.error("全局异常捕捉处理", ex);
         return ResponseMessageUtil.error500();
     }
@@ -38,7 +39,7 @@ public class ExceptionHandlerAdvice {
      */
     @ResponseBody
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseMessage errorHandler(MethodArgumentNotValidException ex) {
+    public ResponseMessage<EmptyData> errorHandler(MethodArgumentNotValidException ex) {
         // 参数校验失败信息
         FieldError fieldError = ex.getBindingResult().getFieldError();
 
@@ -57,8 +58,8 @@ public class ExceptionHandlerAdvice {
      */
     @ResponseBody
     @ExceptionHandler(value = AdminException.class)
-    public ResponseMessage myErrorHandler(AdminException ex) {
-        ResponseMessage responseMessage = ex.getResponseMessage();
+    public ResponseMessage<EmptyData> myErrorHandler(AdminException ex) {
+        ResponseMessage<EmptyData> responseMessage = ex.getResponseMessage();
         log.error("拦截捕捉自定义异常 - message = {}", FastJsonUtil.objToJsonString(responseMessage));
         return responseMessage;
     }

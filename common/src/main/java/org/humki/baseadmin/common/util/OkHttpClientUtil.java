@@ -38,7 +38,10 @@ public class OkHttpClientUtil {
      */
     public static String get(String url, String charset) {
         try {
-            Request request = new Request.Builder().get().url(url).build();
+            Request request = new Request.Builder()
+                    .get()
+                    .url(url)
+                    .build();
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
             if (!response.isSuccessful()) {
                 return null;

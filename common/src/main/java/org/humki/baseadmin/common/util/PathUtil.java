@@ -21,7 +21,7 @@ public class PathUtil {
     private static final String UTF8 = "utf-8";
 
 
-    public static String getRootPath(Class clazz) {
+    public static String getRootPath(Class<?> clazz) {
         URL url = clazz.getProtectionDomain().getCodeSource().getLocation();
         String filePath;
         try {
@@ -60,5 +60,8 @@ public class PathUtil {
         return !file.mkdirs();
     }
 
+    public static void main(String[] args) {
+        System.out.println(getRootPath(PathUtil.class));
+    }
 
 }

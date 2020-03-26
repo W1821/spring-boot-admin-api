@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.Cipher;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -18,33 +19,14 @@ import java.security.spec.X509EncodedKeySpec;
 @Slf4j
 public class RsaUtil {
 
-    private static final String UTF8 = "utf-8";
-
     private static final String RSA = "RSA";
     private static final String CIPHER_RSA = "RSA/ECB/PKCS1Padding";
     private static final String BAR = "-";
-    private static final char SOFT_BLANK = '\r';
 
     /**
      * RSA最大加密明文大小
      */
     private static final int MAX_ENCRYPT_BLOCK = 117;
-
-    /**
-     * 解密
-     *
-     * @param cipherText  密文
-     * @param privatePath 私钥路径
-     * @return 返回解密后的字符串
-     */
-    public static String decrypt(String cipherText, String privatePath) throws Exception {
-        PrivateKey privateKey = RsaUtil.loadPrivateKey(getPrivateKeyString(privatePath));
-        byte[] decryptByte = RsaUtil.decryptData(Base64Util.decode(cipherText), privateKey);
-        if (decryptByte != null) {
-            return new String(decryptByte, UTF8);
-        }
-        return null;
-    }
 
 
     /**
@@ -53,8 +35,37 @@ public class RsaUtil {
      * @param cipherText 密文
      * @return 返回解密后的字符串
      */
-    public static String decrypt(String cipherText) throws Exception {
+    public static String decrypt(String cipherText) {
         return decrypt(cipherText, null);
+    }
+
+    /**
+     * 解密
+     *
+     * @param cipherText  密文
+     * @param privatePath 私钥路径
+     * @return 返回解密后的字符串
+     */
+    public static String decrypt(String cipherText, String privatePath) {
+        PrivateKey privateKey = RsaUtil.loadPrivateKey(getPrivateKeyString(privatePath));
+        if (privateKey == null) {
+            return null;
+        }
+        byte[] decryptByte = RsaUtil.decryptData(Base64Util.decode(cipherText), privateKey);
+        if (decryptByte == null) {
+            return null;
+        }
+        return new String(decryptByte, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * 加密
+     *
+     * @param plainTest 明文
+     * @return 返回加密后的密文
+     */
+    public static String encrypt(String plainTest) {
+        return encrypt(plainTest, null);
     }
 
     /**
@@ -64,25 +75,21 @@ public class RsaUtil {
      * @param publicPath 公钥路径
      * @return 返回加密后的密文
      */
-    public static String encrypt(String plainTest, String publicPath) throws Exception {
+    public static String encrypt(String plainTest, String publicPath) {
         PublicKey publicKey = RsaUtil.loadPublicKey(getPublicKeyString(publicPath));
+        if (publicKey == null) {
+            return null;
+        }
         return Base64Util.encode(RsaUtil.encryptData(plainTest.getBytes(), publicKey));
     }
 
-    /**
-     * 加密
-     *
-     * @param plainTest 明文
-     * @return 返回加密后的密文
-     */
-    public static String encrypt(String plainTest) throws Exception {
-        return encrypt(plainTest);
-    }
+
+    /* ==================================================================================== */
 
     /**
      * 获取公钥字符串
      */
-    public static String getPublicKeyString(String publicPath) {
+    private static String getPublicKeyString(String publicPath) {
         publicPath = publicPath == null ? PathUtil.getRootPath(RsaUtil.class) + "/public_key.pem" : publicPath;
         return getKeyString(publicPath);
     }
@@ -169,39 +176,40 @@ public class RsaUtil {
      * 从字符串中加载公钥
      *
      * @param publicKeyStr 公钥数据字符串
-     * @throws Exception 加载公钥时产生的异常
      */
-    private static PublicKey loadPublicKey(String publicKeyStr) throws Exception {
+    private static PublicKey loadPublicKey(String publicKeyStr) {
         try {
             byte[] buffer = Base64Util.decode(publicKeyStr);
             KeyFactory keyFactory = KeyFactory.getInstance(RSA);
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
             return keyFactory.generatePublic(keySpec);
         } catch (NoSuchAlgorithmException e) {
-            throw new Exception("无此算法");
+            log.error("无此算法", e);
         } catch (InvalidKeySpecException e) {
-            throw new Exception("公钥非法");
+            log.error("私钥非法", e);
         } catch (NullPointerException e) {
-            throw new Exception("公钥数据为空");
+            log.error("私钥数据为空", e);
         }
+        return null;
     }
 
     /**
      * 从字符串中加载私钥<br>
      * 加载时使用的是PKCS8EncodedKeySpec（PKCS#8编码的Key指令）。
      */
-    private static PrivateKey loadPrivateKey(String privateKeyStr) throws Exception {
+    private static PrivateKey loadPrivateKey(String privateKeyStr) {
         try {
             byte[] buffer = Base64Util.decode(privateKeyStr);
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(buffer);
             return KeyFactory.getInstance(RSA).generatePrivate(keySpec);
         } catch (NoSuchAlgorithmException e) {
-            throw new Exception("无此算法");
+            log.error("无此算法", e);
         } catch (InvalidKeySpecException e) {
-            throw new Exception("私钥非法");
+            log.error("私钥非法", e);
         } catch (NullPointerException e) {
-            throw new Exception("私钥数据为空");
+            log.error("私钥数据为空", e);
         }
+        return null;
     }
 
     /**
@@ -212,16 +220,22 @@ public class RsaUtil {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
             String readLine;
             while ((readLine = br.readLine()) != null) {
-                System.out.println(readLine);
+                // 需要移除文件中的开头和结尾
                 if (!readLine.startsWith(BAR)) {
                     sb.append(readLine);
-                    sb.append(SOFT_BLANK);
                 }
             }
         } catch (IOException e) {
             log.error("读取密钥信息失败", e);
         }
         return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        String encryptedStr = RsaUtil.encrypt("你好");
+        log.debug("加密后的字符串={}", encryptedStr);
+        String decryptedStr = RsaUtil.decrypt(encryptedStr);
+        log.debug("解密后的字符串={}", decryptedStr);
     }
 
 }
