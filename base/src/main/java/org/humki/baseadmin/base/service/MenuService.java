@@ -16,6 +16,7 @@ import org.humki.baseadmin.base.repository.MenuRepository;
 import org.humki.baseadmin.common.constant.GlobalCodeEnum;
 import org.humki.baseadmin.common.constant.GlobalConstant;
 import org.humki.baseadmin.common.constant.GlobalEnum;
+import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class MenuService extends SystemBaseService {
+public class MenuService extends BaseBaseService {
 
     private final MenuRepository menuRepository;
 
@@ -44,7 +45,7 @@ public class MenuService extends SystemBaseService {
     /**
      * 查询所有
      */
-    public ResponseMessage list() {
+    public ResponseMessage<List<MenuDTO>> list() {
         List<MenuModel> menuList = menuRepository.findByDeletedOrderByRank(GlobalEnum.DELETED.NO.getKey());
         // 排序菜单
         List<MenuModel> sortedMenuList = getSortedMenuModels(menuList);
@@ -58,7 +59,7 @@ public class MenuService extends SystemBaseService {
     /**
      * 查询一个
      */
-    public ResponseMessage query(Long id) {
+    public ResponseMessage<MenuDTO> query(Long id) {
         MenuBO menuBO = MenuBO.builder()
                 .repository(menuRepository)
                 .dto(MenuDTO.builder().id(id).build())
@@ -70,7 +71,7 @@ public class MenuService extends SystemBaseService {
      * 保存
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResponseMessage save(MenuDTO dto) {
+    public ResponseMessage<EmptyData> save(MenuDTO dto) {
 
         if (StringUtils.isNotEmpty(dto.getPids())) {
             String[] pids = dto.getPids().split(GlobalConstant.COMMA);
@@ -96,7 +97,7 @@ public class MenuService extends SystemBaseService {
      * 删除成功
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResponseMessage delete(Long id) {
+    public ResponseMessage<EmptyData> delete(Long id) {
         MenuBO bo = MenuBO.builder().repository(menuRepository).dto(MenuDTO.builder().id(id).build()).build();
         return bo.delete();
     }
@@ -104,7 +105,7 @@ public class MenuService extends SystemBaseService {
     /**
      * 当前登陆人的菜单
      */
-    public ResponseMessage getMenuList() {
+    public ResponseMessage<List<MenuDTO>> getMenuList() {
         UserModel model = getUserDetail();
         List<MenuModel> menuList = getMenuModels(model);
         // 返回DTO

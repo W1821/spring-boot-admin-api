@@ -30,7 +30,7 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(value = Exception.class)
     public ResponseMessage errorHandler(Exception ex) {
         log.error("全局异常捕捉处理", ex);
-        return ResponseMessageUtil.error();
+        return ResponseMessageUtil.error500();
     }
 
     /**
@@ -45,9 +45,9 @@ public class ExceptionHandlerAdvice {
         log.error("拦截捕捉参数验证异常 - message = {}", fieldError);
 
         if (fieldError == null) {
-            return ResponseMessageUtil.error();
+            return ResponseMessageUtil.error500();
         } else {
-            return ResponseMessageUtil.error(fieldError.getDefaultMessage());
+            return ResponseMessageUtil.error500(fieldError.getDefaultMessage());
         }
 
     }

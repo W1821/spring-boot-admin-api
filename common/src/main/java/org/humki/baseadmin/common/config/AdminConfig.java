@@ -47,7 +47,7 @@ public class AdminConfig {
             "/static/**",
             "/assets/**",
 
-            /* swagger页面，TODO 未做安全限制，项目部署注意一下 */
+            /* http://localhost:8888/swagger-ui.html swagger页面，TODO 未做安全限制，项目部署注意一下 */
             "/webjars/**",
             "/v2/api-docs",
             "/swagger-resources/**",

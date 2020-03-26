@@ -1,7 +1,7 @@
 package org.humki.baseadmin.controller;
 
 
-import org.humki.baseadmin.base.controller.SystemBaseController;
+import org.humki.baseadmin.base.controller.BaseBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("")
-public class MainController extends SystemBaseController {
+public class MainController extends BaseBaseController {
 
     /**
      * index.html

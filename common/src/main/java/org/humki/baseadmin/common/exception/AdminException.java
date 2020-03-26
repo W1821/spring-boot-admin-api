@@ -19,8 +19,8 @@ public class AdminException extends RuntimeException {
 
     public AdminException(GlobalCodeEnum.ErrorCode errorCode) {
         this.responseMessage = ResponseMessage.builder()
-                .errorCode(errorCode.getKey())
-                .errorMsg(errorCode.getValue())
+                .code(errorCode.getKey())
+                .msg(errorCode.getValue())
                 .build();
     }
 

@@ -1,4 +1,4 @@
-package org.humki.baseadmin.base.controller;
+package org.humki.baseadmin.core.controller;
 
 
 import org.humki.baseadmin.common.controller.BaseController;
@@ -8,7 +8,7 @@ import org.humki.baseadmin.common.controller.BaseController;
  *
  * @author Kael
  */
-public class SystemBaseController extends BaseController {
+public class CoreBaseController extends BaseController {
 
 
 }

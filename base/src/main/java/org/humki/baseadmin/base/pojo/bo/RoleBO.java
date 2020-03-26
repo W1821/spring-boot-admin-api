@@ -13,6 +13,7 @@ import org.humki.baseadmin.base.repository.MenuRepository;
 import org.humki.baseadmin.base.repository.RoleRepository;
 import org.humki.baseadmin.common.constant.GlobalEnum;
 import org.humki.baseadmin.common.pojo.bo.BaseBO;
+import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ExceptionUtil;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
 @Getter
 @ToString
 @Builder
-public class RoleBO extends BaseBO {
+public class RoleBO extends BaseBO<RoleDTO> {
 
     private RoleRepository repository;
     private MenuRepository menuRepository;
@@ -42,14 +43,14 @@ public class RoleBO extends BaseBO {
     private RoleModel model;
 
     @Override
-    public ResponseMessage queryOne() {
+    public ResponseMessage<RoleDTO> queryOne() {
         findById();
         poToDto();
         return ResponseMessageUtil.success(dto);
     }
 
     @Override
-    public ResponseMessage save() {
+    public ResponseMessage<EmptyData> save() {
         if (dto.getId() == null) {
             // 新增
             dtoToPo();
@@ -64,7 +65,7 @@ public class RoleBO extends BaseBO {
     }
 
     @Override
-    public ResponseMessage delete() {
+    public ResponseMessage<EmptyData> delete() {
         findById();
         logicDelete();
         return ResponseMessageUtil.deleteSuccess();
@@ -86,7 +87,7 @@ public class RoleBO extends BaseBO {
     }
 
     @Override
-    public RoleModel dtoToPo() {
+    public void dtoToPo() {
         if (model == null) {
             model = new RoleModel();
         }
@@ -97,7 +98,6 @@ public class RoleBO extends BaseBO {
         // 默认未删除
         model.setDeleted(GlobalEnum.DELETED.NO.getKey());
         model.setCreateTime(LocalDateTime.now());
-        return model;
     }
 
     /**

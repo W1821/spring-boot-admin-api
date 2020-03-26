@@ -3,6 +3,7 @@ package org.humki.baseadmin.security.entrypoint;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import org.humki.baseadmin.common.constant.GlobalConstant;
+import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.FastJsonUtil;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
@@ -35,7 +36,7 @@ public class RestAuthenticationEntryPoint extends BasicAuthenticationEntryPoint 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setCharacterEncoding(GlobalConstant.CHARACTER_ENCODING_UTF8);
         response.setContentType(GlobalConstant.CONTENT_TYPE_APPLICATION_JSON);
-        ResponseMessage message = ResponseMessageUtil.buildNoAuthErrorMessage();
+        ResponseMessage<EmptyData> message = ResponseMessageUtil.error401();
         @Cleanup PrintWriter out = response.getWriter();
         out.append(FastJsonUtil.objToJsonString(message));
     }

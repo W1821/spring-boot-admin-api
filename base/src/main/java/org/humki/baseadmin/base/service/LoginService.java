@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class LoginService extends SystemBaseService {
+public class LoginService extends BaseBaseService {
 
     /**
      * 登录

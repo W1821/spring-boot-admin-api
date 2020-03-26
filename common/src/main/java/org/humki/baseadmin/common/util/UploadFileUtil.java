@@ -130,10 +130,8 @@ public class UploadFileUtil {
         String relativePath = getRelativePath(rootPath);
         // 文件存储路径
         String fullPath = rootPath + relativePath + fileName;
-        try (
-                FileOutputStream fileOutputStream = new FileOutputStream(new File(fullPath));
-                BufferedOutputStream out = new BufferedOutputStream(fileOutputStream);
-        ) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(new File(fullPath));
+             BufferedOutputStream out = new BufferedOutputStream(fileOutputStream)) {
             out.write(fileBytes);
             out.flush();
         } catch (IOException e) {

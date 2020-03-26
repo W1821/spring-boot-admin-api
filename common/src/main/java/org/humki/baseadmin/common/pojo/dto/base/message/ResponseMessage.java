@@ -18,15 +18,15 @@ import lombok.*;
 @Setter
 @Builder
 @ApiModel("统一响应")
-public class ResponseMessage<T> {
+public class ResponseMessage<D> {
 
     @ApiModelProperty(value = "错误状态码,如果是0，表示正确", example = "0")
-    private Integer errorCode;
+    private Integer code;
 
     @ApiModelProperty(value = "错误信息", example = "参数错误")
-    private String errorMsg;
+    private String msg;
 
     @ApiModelProperty(value = "消息体，响应正确信息", example = "{}")
-    private T data;
+    private D data;
 
 }

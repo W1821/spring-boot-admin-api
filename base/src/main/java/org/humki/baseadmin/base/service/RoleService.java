@@ -12,6 +12,7 @@ import org.humki.baseadmin.base.repository.ButtonRepository;
 import org.humki.baseadmin.base.repository.MenuRepository;
 import org.humki.baseadmin.base.repository.RoleRepository;
 import org.humki.baseadmin.common.constant.GlobalEnum;
+import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
  * @author Kael
  */
 @Service
-public class RoleService extends SystemBaseService {
+public class RoleService extends BaseBaseService {
 
     private final RoleRepository roleRepository;
     private final MenuRepository menuRepository;
@@ -41,7 +42,7 @@ public class RoleService extends SystemBaseService {
     /**
      * 查询所有
      */
-    public ResponseMessage list(RoleSearchDTO dto) {
+    public ResponseMessage<Page<RoleDTO>> list(RoleSearchDTO dto) {
         // 分页查询
         Page<RoleModel> dataList = roleRepository.findAll(RoleBO.createSpecification(dto), getPageable(dto));
         // 处理数据返回到前端
@@ -52,7 +53,7 @@ public class RoleService extends SystemBaseService {
     /**
      * 查询一个
      */
-    public ResponseMessage query(Long id) {
+    public ResponseMessage<RoleDTO> query(Long id) {
         RoleBO bo = RoleBO.builder().repository(roleRepository).dto(RoleDTO.builder().id(id).build()).build();
         return bo.queryOne();
     }
@@ -60,7 +61,7 @@ public class RoleService extends SystemBaseService {
     /**
      * 保存
      */
-    public ResponseMessage save(RoleDTO dto) {
+    public ResponseMessage<EmptyData> save(RoleDTO dto) {
         RoleBO bo = RoleBO.builder()
                 .repository(roleRepository)
                 .menuRepository(menuRepository)
@@ -73,7 +74,7 @@ public class RoleService extends SystemBaseService {
     /**
      * 删除
      */
-    public ResponseMessage delete(Long id) {
+    public ResponseMessage<EmptyData> delete(Long id) {
         RoleBO bo = RoleBO.builder().repository(roleRepository).dto(RoleDTO.builder().id(id).build()).build();
         return bo.delete();
     }
@@ -82,7 +83,7 @@ public class RoleService extends SystemBaseService {
     /**
      * 当前登陆人的角色
      */
-    public ResponseMessage getRoleList() {
+    public ResponseMessage<List<RoleDTO>> getRoleList() {
 
         // 当前登陆人
         UserModel model = getUserDetail();

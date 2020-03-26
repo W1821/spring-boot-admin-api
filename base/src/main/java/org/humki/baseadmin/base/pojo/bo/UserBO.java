@@ -17,6 +17,7 @@ import org.humki.baseadmin.base.repository.UserRepository;
 import org.humki.baseadmin.common.config.AdminConfig;
 import org.humki.baseadmin.common.constant.GlobalEnum;
 import org.humki.baseadmin.common.pojo.bo.BaseBO;
+import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ExceptionUtil;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
 @Getter
 @ToString
 @Builder
-public class UserBO extends BaseBO {
+public class UserBO extends BaseBO<UserDTO> {
 
     private AdminConfig adminConfig;
 
@@ -48,7 +49,7 @@ public class UserBO extends BaseBO {
     private UserModel model;
 
     @Override
-    public ResponseMessage queryOne() {
+    public ResponseMessage<UserDTO> queryOne() {
         findById();
         poToDto();
         dto.setPassword(null);
@@ -56,7 +57,7 @@ public class UserBO extends BaseBO {
     }
 
     @Override
-    public ResponseMessage save() {
+    public ResponseMessage<EmptyData> save() {
         if (dto.getId() == null) {
             // 新增
             dtoToPo();
@@ -79,7 +80,7 @@ public class UserBO extends BaseBO {
     }
 
     @Override
-    public ResponseMessage delete() {
+    public ResponseMessage<EmptyData> delete() {
         findById();
         logicDelete();
         return ResponseMessageUtil.deleteSuccess();
@@ -108,7 +109,7 @@ public class UserBO extends BaseBO {
     }
 
     @Override
-    public UserModel dtoToPo() {
+    public void dtoToPo() {
         if (model == null) {
             model = new UserModel();
         }
@@ -126,7 +127,6 @@ public class UserBO extends BaseBO {
         model.setDeleted(GlobalEnum.DELETED.NO.getKey());
         // 创建时间
         model.setCreateTime(LocalDateTime.now());
-        return model;
     }
 
 

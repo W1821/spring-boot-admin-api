@@ -11,6 +11,7 @@ import org.humki.baseadmin.base.util.UserDetailUtil;
 import org.humki.baseadmin.common.config.AdminConfig;
 import org.humki.baseadmin.common.constant.GlobalCodeEnum;
 import org.humki.baseadmin.common.constant.GlobalEnum;
+import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.humki.baseadmin.common.util.UploadFileUtil;
@@ -26,7 +27,7 @@ import org.springframework.stereotype.Service;
  * @author Kael
  */
 @Service
-public class UserService extends SystemBaseService {
+public class UserService extends BaseBaseService {
 
     private final AdminConfig adminConfig;
     private final FileUploadConfig fileUploadConfig;
@@ -53,7 +54,7 @@ public class UserService extends SystemBaseService {
     /**
      * 查询所有
      */
-    public ResponseMessage list(UserSearchDTO dto) {
+    public ResponseMessage<Page<UserDTO>> list(UserSearchDTO dto) {
         // 分页查询
         Page<UserModel> dataList = userRepository.findAll(UserBO.createSpecification(dto), getPageable(dto));
         // 处理数据返回到前端
@@ -64,7 +65,7 @@ public class UserService extends SystemBaseService {
     /**
      * 查询一个
      */
-    public ResponseMessage query(Long id) {
+    public ResponseMessage<UserDTO> query(Long id) {
         UserBO userBO = UserBO.builder().repository(userRepository).dto(UserDTO.builder().id(id).build()).build();
         return userBO.queryOne();
     }
@@ -72,7 +73,7 @@ public class UserService extends SystemBaseService {
     /**
      * 保存
      */
-    public ResponseMessage save(UserDTO dto) {
+    public ResponseMessage<EmptyData> save(UserDTO dto) {
         // 判断手机号码是否有重复
         if (checkPhoneNumber(dto)) {
             return ResponseMessageUtil.error(GlobalCodeEnum.ErrorCode.ERROR_1200);
@@ -95,7 +96,7 @@ public class UserService extends SystemBaseService {
     /**
      * 删除
      */
-    public ResponseMessage delete(Long id) {
+    public ResponseMessage<EmptyData> delete(Long id) {
         UserBO userBO = UserBO.builder().repository(userRepository).dto(UserDTO.builder().id(id).build()).build();
         return userBO.delete();
     }
@@ -104,7 +105,7 @@ public class UserService extends SystemBaseService {
     /**
      * 检查手机号码是否存在
      */
-    public ResponseMessage checkNumber(String phoneNumber) {
+    public ResponseMessage<EmptyData> checkNumber(String phoneNumber) {
         UserModel model = findByPhoneNumber(phoneNumber);
         if (model != null) {
             return ResponseMessageUtil.error(GlobalCodeEnum.ErrorCode.ERROR_1200);
@@ -115,7 +116,7 @@ public class UserService extends SystemBaseService {
     /**
      * 修改密码
      */
-    public ResponseMessage modifyOwnPassword(ModifyPwdDTO dto) {
+    public ResponseMessage<EmptyData> modifyOwnPassword(ModifyPwdDTO dto) {
         UserModel user = UserDetailUtil.getCurrentUser();
         if (user == null) {
             return ResponseMessageUtil.error(GlobalCodeEnum.ErrorCode.ERROR_401);

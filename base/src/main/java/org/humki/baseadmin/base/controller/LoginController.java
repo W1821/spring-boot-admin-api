@@ -4,8 +4,10 @@ package org.humki.baseadmin.base.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.Authorization;
 import org.humki.baseadmin.base.pojo.dto.user.UserDTO;
 import org.humki.baseadmin.common.constant.GlobalCodeEnum;
+import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.humki.baseadmin.base.service.LoginService;
@@ -21,11 +23,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author Kael
  */
-@Api("登录、登出控制器")
+@Api(tags = "登录、登出")
 @RestController
 @RequestMapping("/system")
-@SuppressWarnings("unchecked")
-public class LoginController extends SystemBaseController {
+public class LoginController extends BaseBaseController {
 
     private final LoginService loginService;
 
@@ -48,7 +49,7 @@ public class LoginController extends SystemBaseController {
     @ApiOperation(value = "退出")
     @ApiResponse(code = 200, message = "退出成功", response = ResponseMessage.class)
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ResponseMessage logout(HttpSession session) {
+    public ResponseMessage<EmptyData> logout(HttpSession session) {
         session.invalidate();
         return ResponseMessageUtil.success(GlobalCodeEnum.SuccessCode.SUCCESS_2002);
     }

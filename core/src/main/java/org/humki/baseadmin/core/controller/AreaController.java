@@ -1,9 +1,6 @@
 package org.humki.baseadmin.core.controller;
 
 
-import org.humki.baseadmin.base.controller.SystemBaseController;
-import org.humki.baseadmin.common.annotation.HandlerAuth;
-import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.core.service.AreaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/area")
-public class AreaController extends SystemBaseController {
+public class AreaController extends CoreBaseController {
 
     private final AreaService areaService;
 

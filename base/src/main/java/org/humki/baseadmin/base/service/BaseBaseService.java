@@ -10,7 +10,7 @@ import org.humki.baseadmin.common.service.BaseService;
  *
  * @author Kael
  */
-public class SystemBaseService extends BaseService {
+public class BaseBaseService extends BaseService {
 
     /* ================================================================================= */
 

@@ -1,6 +1,6 @@
 package org.humki.baseadmin.core.service;
 
-import org.humki.baseadmin.base.service.SystemBaseService;
+import org.humki.baseadmin.base.service.BaseBaseService;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.humki.baseadmin.core.pojo.po.AreaModel;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * @author Kael
  */
 @Service
-public class AreaService extends SystemBaseService {
+public class AreaService extends BaseBaseService {
 
     private final AreaRepository areaRepository;
 
@@ -28,7 +28,7 @@ public class AreaService extends SystemBaseService {
         AreaModel model = new AreaModel();
         model.setAreaName("p");
         areaRepository.save(model);
-        return ResponseMessageUtil.success("成功");
+        return ResponseMessageUtil.success();
     }
 
 }

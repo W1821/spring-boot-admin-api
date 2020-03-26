@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * 菜单信息
+ *
  * @author Kael
  */
 @NoArgsConstructor
@@ -42,7 +43,7 @@ public class MenuDTO extends BaseDTO {
     @ApiModelProperty(value = "菜单名称", example = "菜单管理")
     private String showName;
 
-    @ApiModelProperty(value = "菜单图标" )
+    @ApiModelProperty(value = "菜单图标", example = "setting")
     private String icon;
 
     @ApiModelProperty(value = "排序", example = "1")

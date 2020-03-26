@@ -10,6 +10,7 @@ import org.humki.baseadmin.base.pojo.po.MenuModel;
 import org.humki.baseadmin.base.repository.MenuRepository;
 import org.humki.baseadmin.common.constant.GlobalEnum;
 import org.humki.baseadmin.common.pojo.bo.BaseBO;
+import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ExceptionUtil;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
@@ -27,14 +28,14 @@ import java.util.stream.Collectors;
 @Getter
 @ToString
 @Builder
-public class MenuBO extends BaseBO {
+public class MenuBO extends BaseBO<MenuDTO> {
 
     private MenuRepository repository;
     private MenuDTO dto;
     private MenuModel model;
 
     @Override
-    public ResponseMessage queryOne() {
+    public ResponseMessage<MenuDTO> queryOne() {
         findById();
         poToDto();
         // 关联按钮项
@@ -43,7 +44,7 @@ public class MenuBO extends BaseBO {
     }
 
     @Override
-    public ResponseMessage save() {
+    public ResponseMessage<EmptyData> save() {
         if (dto.getId() == null) {
             // 新增
             dtoToPo();
@@ -72,7 +73,7 @@ public class MenuBO extends BaseBO {
     }
 
     @Override
-    public ResponseMessage delete() {
+    public ResponseMessage<EmptyData> delete() {
         findById();
         logicDelete();
         return ResponseMessageUtil.deleteSuccess();
@@ -95,11 +96,10 @@ public class MenuBO extends BaseBO {
     }
 
     @Override
-    public MenuModel dtoToPo() {
+    public void dtoToPo() {
         model = new MenuModel();
         model.setId(dto.getId());
         setModelByDto();
-        return model;
     }
 
     public MenuDTO poToDtoHaveButtons() {
