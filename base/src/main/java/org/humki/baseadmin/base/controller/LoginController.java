@@ -4,13 +4,12 @@ package org.humki.baseadmin.base.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.Authorization;
 import org.humki.baseadmin.base.pojo.dto.user.UserDTO;
+import org.humki.baseadmin.base.service.LoginService;
 import org.humki.baseadmin.common.constant.GlobalCodeEnum;
 import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
-import org.humki.baseadmin.base.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +40,7 @@ public class LoginController extends BaseBaseController {
      */
     @ApiOperation(value = "登录")
     @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @SuppressWarnings("unchecked")
     public ResponseMessage<UserDTO> login() {
         return loginService.login();
     }

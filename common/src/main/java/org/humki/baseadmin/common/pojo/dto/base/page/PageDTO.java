@@ -37,13 +37,13 @@ public class PageDTO extends BaseDTO {
     /**
      * 排序字段
      */
-    @ApiModelProperty(value = "排序字段", example = "name")
+    @ApiModelProperty(value = "排序字段，为空时不排序", example = "name")
     private String sortField;
 
     /**
      * 排序方式
      */
-    @ApiModelProperty(value = "排序方式", example = "desc")
+    @ApiModelProperty(value = "排序方式,desc或asc或不传为空,为空时默认为asc", example = "desc")
     private String sortOrder;
 
     public Integer getIndex() {

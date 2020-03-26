@@ -14,47 +14,45 @@ import org.springframework.data.domain.Sort;
  */
 public class BaseService {
 
+    private final static String DESC = "desc";
+
     /**
      * 获取分页查询对象
      */
     protected Pageable getPageable(PageDTO dto) {
+        // 第几页
+        Integer index = dto.getIndex();
+        // 总页数
+        Integer size = dto.getSize();
+        // 排序字段，支持一个字段排序
+        String sortField = dto.getSortField();
         // 如果有排序
-        if (!StringUtil.isEmpty(dto.getSortField())) {
-            boolean isDesc = !StringUtil.isEmpty(dto.getSortOrder()) && dto.getSortOrder().contains("desc");
-            return isDesc ? getPageableDesc(dto) : getPageableAsc(dto);
+        if (needSort(sortField)) {
+            return isDesc(dto) ?
+                    PageRequest.of(index, size, Sort.by(Sort.Direction.DESC, sortField))
+                    :
+                    PageRequest.of(index, size, Sort.by(Sort.Direction.ASC, sortField));
         }
-        return PageRequest.of(dto.getIndex(), dto.getSize());
-    }
-
-
-    /**
-     * 多条件分页排序
-     */
-    protected Pageable getPageable(Integer page, Integer size, Sort.Direction direction, String... sortFields) {
-        Sort sort = Sort.by(direction, sortFields);
-        return PageRequest.of(page, size, sort);
+        return PageRequest.of(index, size);
     }
 
     /* ======================================= private method========================================== */
 
     /**
-     * 获取分页查询对象
+     * 判断是否需要排序
      */
-    private Pageable getPageableAsc(PageDTO dto) {
-        Integer page = dto.getIndex();
-        Integer size = dto.getSize();
-        Sort sort = Sort.by(Sort.Direction.ASC, dto.getSortField());
-        return PageRequest.of(page, size, sort);
+    private boolean needSort(String sortField) {
+        return StringUtil.isNotEmpty(sortField);
     }
 
     /**
-     * 获取分页查询对象
+     * 判断是否是倒序
      */
-    private Pageable getPageableDesc(PageDTO dto) {
-        Integer page = dto.getIndex();
-        Integer size = dto.getSize();
-        Sort sort = Sort.by(Sort.Direction.DESC, dto.getSortField());
-        return PageRequest.of(page, size, sort);
+    private boolean isDesc(PageDTO dto) {
+        if (StringUtil.isEmpty(dto.getSortOrder())) {
+            return false;
+        }
+        return dto.getSortOrder().contains(DESC);
     }
 
 }

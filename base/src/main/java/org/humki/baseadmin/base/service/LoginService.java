@@ -6,6 +6,7 @@ import org.humki.baseadmin.base.pojo.dto.user.UserDTO;
 import org.humki.baseadmin.base.pojo.po.UserModel;
 import org.humki.baseadmin.common.constant.GlobalCodeEnum;
 import org.humki.baseadmin.common.constant.GlobalEnum;
+import org.humki.baseadmin.common.pojo.dto.base.message.EmptyData;
 import org.humki.baseadmin.common.pojo.dto.base.message.ResponseMessage;
 import org.humki.baseadmin.common.util.ResponseMessageUtil;
 import org.springframework.stereotype.Service;
