@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>core</artifactId>
+    <description>主要的业务代码</description>
 
     <dependencies>
 
