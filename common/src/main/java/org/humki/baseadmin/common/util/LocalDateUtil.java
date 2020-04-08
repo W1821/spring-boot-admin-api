@@ -127,7 +127,7 @@ public class LocalDateUtil {
      * 判断当前时间是否在startTime和endTime之间
      * HH:mm:ss格式
      */
-    public static boolean nowBetween(String startTime, String endTime) {
+    public static boolean nowTimeBetween(String startTime, String endTime) {
         return timeBetween(LocalTime.now(), startTime, endTime);
     }
 
