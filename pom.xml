@@ -29,7 +29,7 @@
         <!-- 项目版本 -->
         <base-admin-api.version>1.0.0</base-admin-api.version>
 
-        <fastjson.version>1.2.62</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <easypoi-base.version>2.4.0</easypoi-base.version>
 
         <!-- TODO 需要等待升级版本，此版本和spring-boot 2.x不兼容 -->
